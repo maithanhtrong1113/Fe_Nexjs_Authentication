@@ -1,17 +1,9 @@
-import { getSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import React, {
-  Fragment,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { Fragment, useRef, useState } from "react";
 
-function Content() {
-  const [name, setName] = useState("dump");
-  const [phone, setPhone] = useState("dump");
-  const [email, setEmail] = useState("dump@gmail.com");
+function Content(props) {
+  const [name, setName] = useState(props.data.name);
+  const [phone, setPhone] = useState(props.data.phone);
+  const [email, setEmail] = useState(props.data.email);
 
   return (
     <Fragment>

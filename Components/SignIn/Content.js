@@ -9,7 +9,6 @@ const Content = (props) => {
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
-    console.log(data);
     props.LoginSubmit(data);
   };
 
@@ -83,7 +82,7 @@ const Content = (props) => {
                 </button>
                 <p className="small fw-bold mt-2 pt-1 mb-0">
                   Don't have an account?{" "}
-                  <Link href="/signUp" className="link-info">
+                  <Link href="/signup" className="link-info">
                     Register
                   </Link>
                 </p>

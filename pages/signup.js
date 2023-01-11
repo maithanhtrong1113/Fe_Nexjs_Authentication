@@ -2,6 +2,7 @@ import React, { Fragment, useContext } from "react";
 import Content from "../Components/SignUp/Content";
 import Navigation from "../Components/Index/Navigation";
 import { useRouter } from "next/router";
+import { getSession } from "next-auth/react";
 
 const signup = () => {
   const router = useRouter();
@@ -21,7 +22,7 @@ const signup = () => {
       .then((res) => {
         if (res.ok) {
           alert("Account successfully created");
-          router.push("/signIn");
+          router.push("/signin");
         } else {
           return res.json().then((data) => {
             let errorMessage = "Unable to create account";
@@ -45,5 +46,17 @@ const signup = () => {
     </Fragment>
   );
 };
+export async function getServerSideProps(context) {
+  const session = await getSession({ req: context.req });
 
+  if (session) {
+    return {
+      redirect: {
+        destination: "/",
+        permant: false,
+      },
+    };
+  }
+  return { props: {} };
+}
 export default signup;
