@@ -3,19 +3,18 @@ import { Collapse, Navbar, NavbarToggler, Nav, NavItem } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useSession, signOut } from "next-auth/react";
-
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../../store/auth";
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const toggle = () => setIsOpen(!isOpen);
-
-  const { data: session, status } = useSession();
+  const dispatch = useDispatch();
+  const isAuth = useSelector((state) => state.auth.isAuthenticated);
   const logOutHandler = () => {
-    if (status === "authenticated") {
-      console.log(session);
-    }
-    signOut();
+    dispatch(authActions.logout());
+    localStorage.removeItem("token");
+    localStorage.removeItem("id");
   };
   return (
     <Navbar expand={"lg"} className="bg-white navbar-light px-4 px-lg-5">
@@ -33,21 +32,23 @@ const Navigation = () => {
       <NavbarToggler onClick={toggle} />
       <Collapse isOpen={isOpen} navbar className="py-4 py-lg-0 ">
         <Nav className="ms-auto " navbar>
-          {!session && (
+          {!isAuth && (
             <NavItem>
               <Link href="/signin" className="nav-link bg-info text-white">
                 Sign In
               </Link>
             </NavItem>
           )}
-          {session && (
+
+          {isAuth && (
             <NavItem>
               <Link href="/me" className="nav-link mx-2 bg-info text-white ">
                 Profile
               </Link>
             </NavItem>
           )}
-          {session && (
+
+          {isAuth && (
             <NavItem>
               <Link
                 href="/"
@@ -58,7 +59,7 @@ const Navigation = () => {
               </Link>
             </NavItem>
           )}
-          {!session && (
+          {!isAuth && (
             <NavItem>
               <Link href="/signup" className="nav-link mx-2 bg-info text-white">
                 Sign Up

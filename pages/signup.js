@@ -2,8 +2,8 @@ import React, { Fragment, useContext } from "react";
 import Content from "../Components/SignUp/Content";
 import Navigation from "../Components/Index/Navigation";
 import { useRouter } from "next/router";
-import { getSession } from "next-auth/react";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const signup = () => {
   const router = useRouter();
   const submitHandler = (data) => {
@@ -21,42 +21,42 @@ const signup = () => {
     })
       .then((res) => {
         if (res.ok) {
-          alert("Account successfully created");
-          router.push("/signin");
+          toast.success("Account successfully created !", {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 1500,
+            theme: "light",
+          });
+          setTimeout(() => {
+            router.push("/signin");
+          }, 2000);
         } else {
           return res.json().then((data) => {
             let errorMessage = "Unable to create account";
             if (data.data[0].msg) {
               errorMessage = data.data[0].msg;
             }
-            console.log(data);
+
             throw new Error(errorMessage);
           });
         }
       })
       .catch((err) => {
-        alert(err.message);
+        // alert(err.message);
+        toast.error(err.message, {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          theme: "light",
+        });
       });
   };
 
   return (
     <Fragment>
+      <ToastContainer />
       <Navigation />
       <Content onAdd={submitHandler} />
     </Fragment>
   );
 };
-export async function getServerSideProps(context) {
-  const session = await getSession({ req: context.req });
 
-  if (session) {
-    return {
-      redirect: {
-        destination: "/",
-        permant: false,
-      },
-    };
-  }
-  return { props: {} };
-}
 export default signup;

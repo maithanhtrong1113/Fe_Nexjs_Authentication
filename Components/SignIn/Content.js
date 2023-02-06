@@ -9,7 +9,7 @@ const Content = (props) => {
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
-    props.LoginSubmit(data);
+    props.Login(data);
   };
 
   return (

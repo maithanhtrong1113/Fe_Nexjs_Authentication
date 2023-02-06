@@ -1,9 +1,19 @@
-import React, { Fragment, useRef, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
+import authApi from "../../api/authApi";
 
-function Content(props) {
-  const [name, setName] = useState(props.data.name);
-  const [phone, setPhone] = useState(props.data.phone);
-  const [email, setEmail] = useState(props.data.email);
+function Content() {
+  let user = {};
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  useEffect(() => {
+    authApi.fetchUser().then((res) => {
+      user = res.data.user;
+      setName(user.name);
+      setPhone(user.phone);
+      setEmail(user.email);
+    });
+  }, []);
 
   return (
     <Fragment>

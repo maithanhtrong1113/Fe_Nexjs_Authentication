@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
+
 const Content = (props) => {
   const {
     register,
@@ -10,7 +11,6 @@ const Content = (props) => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
     props.onAdd(data);
   };
 
